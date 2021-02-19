@@ -8,7 +8,7 @@ function ProjectSummary({ project }) {
           <strong>{project.title}</strong>
         </span>
         <p>Posted by Chiji Davidson</p>
-        <p className="grey-text">10th February, 6am</p>
+        <p className="white-text">10th February, 6am</p>
       </div>
     </div>
   );
