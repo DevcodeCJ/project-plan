@@ -3,18 +3,40 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import rootReducer from "./reducers/rootReducer";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
+import { getFirebase, ReactReduxFirebaseProvider } from "react-redux-firebase";
+import {
+  getFirestore,
+  reduxFirestore,
+  createFirestoreInstance,
+} from "redux-firestore";
+import firebaseConfig from "./config/firebaseConfig";
+import firebase from "firebase/app";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const enhancer = composeEnhancers(
+  applyMiddleware(thunk.withExtraArgument({ getFirestore, getFirebase })),
+  reduxFirestore(firebase, firebaseConfig)
+);
+
+const store = createStore(rootReducer, enhancer);
+
+const rrfProps = {
+  firebase,
+  config: firebaseConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance,
+};
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
+    <ReactReduxFirebaseProvider {...rrfProps}>
       <App />
-    </React.StrictMode>
+    </ReactReduxFirebaseProvider>
   </Provider>,
   document.getElementById("root")
 );
