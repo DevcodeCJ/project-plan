@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { signIn } from "../../actions/actionCreators";
+import { Redirect } from "react-router-dom";
 
 function SignIn(props) {
   const [userCredentials, setUserCredentials] = useState({});
+  const { authError, auth } = props;
 
   const handleChange = (e) => {
     setUserCredentials({
@@ -17,7 +19,9 @@ function SignIn(props) {
     props.signIn(userCredentials);
   };
 
-  const authError = props.auth;
+  if (auth.uid) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="container">
@@ -44,7 +48,8 @@ function SignIn(props) {
 
 const mapStateToProps = (state) => {
   return {
-    auth: state.auth.authError,
+    authError: state.auth.authError,
+    auth: state.firebase.auth,
   };
 };
 

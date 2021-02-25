@@ -4,6 +4,8 @@ import {
   CREATE_PROJECT_ERROR,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
+  SIGNOUT_SUCCESS,
+  // SIGNOUT_ERROR,
 } from "./actionTypes";
 
 // PURE FUNCTIONS
@@ -33,6 +35,20 @@ const loginError = (error) => {
     payload: error,
   };
 };
+
+const signOutSuccess = () => {
+  return {
+    type: SIGNOUT_SUCCESS,
+  };
+};
+
+// const signOutError = (error) => {
+//   return {
+//     type: SIGNOUT_ERROR,
+//     payload: error,
+//   };
+// };
+
 // ASYNC FUNCTIONS
 export const createProject = (project) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -67,5 +83,16 @@ export const signIn = (credentials) => {
       .catch((error) => {
         dispatch(loginError(error));
       });
+  };
+};
+
+export const signOut = () => {
+  return (dispatch, getState, { getFirebase }) => {
+    const firebase = getFirebase();
+    firebase
+      .auth()
+      .signOut()
+      .then(() => dispatch(signOutSuccess()));
+    // .catch((error) => dispatch(signOutError(error)));
   };
 };

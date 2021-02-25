@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
-function SignUp() {
+function SignUp(props) {
   const [userInfo, setUserInfo] = useState({});
+  const { auth } = props;
 
   const handleChange = (e) => {
     setUserInfo({
@@ -14,6 +17,10 @@ function SignUp() {
     e.preventDefault();
     console.log(userInfo);
   };
+
+  if (auth.uid) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="container">
@@ -43,4 +50,10 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.firebase.auth,
+  };
+};
+
+export default connect(mapStateToProps)(SignUp);
