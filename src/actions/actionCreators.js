@@ -1,4 +1,5 @@
 // IMPORT ACTION TYPES
+import { actionTypes } from "react-redux-firebase";
 import {
   CREATE_PROJECT,
   CREATE_PROJECT_ERROR,
@@ -6,6 +7,10 @@ import {
   LOGIN_ERROR,
   SIGNOUT_SUCCESS,
   // SIGNOUT_ERROR,
+  SIGNUP_SUCCESS,
+  SIGNUP_ERROR,
+  CREATE_INITIAL_SUCCESS,
+  CREATE_INITIAL_ERROR,
 } from "./actionTypes";
 
 // PURE FUNCTIONS
@@ -49,6 +54,33 @@ const signOutSuccess = () => {
 //   };
 // };
 
+const signUpSuccess = () => {
+  return {
+    type: SIGNUP_SUCCESS,
+  };
+};
+
+const signUpError = (error) => {
+  return {
+    type: SIGNUP_ERROR,
+    payload: error,
+  };
+};
+
+const createInitialSuccess = (arr) => {
+  return {
+    type: CREATE_INITIAL_SUCCESS,
+    payload: arr,
+  };
+};
+
+const createInitialError = (error) => {
+  return {
+    type: CREATE_INITIAL_ERROR,
+    payload: error,
+  };
+};
+
 // ASYNC FUNCTIONS
 export const createProject = (project) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -74,6 +106,7 @@ export const createProject = (project) => {
 export const signIn = (credentials) => {
   return (dispatch, getState, { getFirebase }) => {
     const firebase = getFirebase();
+
     firebase
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
@@ -81,7 +114,7 @@ export const signIn = (credentials) => {
         dispatch(loginSuccess());
       })
       .catch((error) => {
-        dispatch(loginError(error));
+        dispatch(loginError(error.message));
       });
   };
 };
@@ -94,5 +127,44 @@ export const signOut = () => {
       .signOut()
       .then(() => dispatch(signOutSuccess()));
     // .catch((error) => dispatch(signOutError(error)));
+  };
+};
+
+export const signUp = (newUser) => {
+  return (dispatch, getState, { getFirebase, getFirestore }) => {
+    const firebase = getFirebase();
+    const firestore = getFirestore();
+
+    try {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(newUser.email, newUser.password)
+        .then((response) => {
+          firestore
+            .collection("users")
+            .doc(response.user.uid)
+            .set({
+              firstName: newUser.firstName,
+              lastName: newUser.lastName,
+              initials: newUser.firstName[0] + newUser.lastName[0],
+            });
+        })
+        .then(dispatch(signUpSuccess()))
+        .catch((error) => dispatch(signUpError(error.message)));
+    } catch (error) {
+      dispatch(signUpError(error.message));
+    }
+  };
+};
+
+export const initialCreator = (users, auth) => {
+  return (dispatch) => {
+    try {
+      const initialsArr = users && users.filter((user) => user.id === auth.uid);
+      // console.log(auth);
+      dispatch(createInitialSuccess(initialsArr));
+    } catch (error) {
+      dispatch(createInitialError(error.message));
+    }
   };
 };

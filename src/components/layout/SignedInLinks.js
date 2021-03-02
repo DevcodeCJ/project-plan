@@ -2,8 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { connect } from "react-redux";
 import { signOut } from "../../actions/actionCreators";
+import { initialCreator } from "../../actions/actionCreators";
 
 function SignedInLinks(props) {
+  const { initials } = props;
+  // console.log(users);
   return (
     <ul className="right">
       <li>
@@ -14,17 +17,26 @@ function SignedInLinks(props) {
       </li>
       <li>
         <NavLink to="/" className="btn btn-floating lighten-1 navlink-btn">
-          CD
+          {initials}
         </NavLink>
       </li>
     </ul>
   );
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => {
   return {
-    signOut: () => dispatch(signOut()),
+    initials: state.initials.initialError,
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignedInLinks);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signOut: () => dispatch(signOut()),
+    createInitials: (users, auth) => {
+      dispatch(initialCreator(users, auth));
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignedInLinks);
