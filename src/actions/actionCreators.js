@@ -11,6 +11,7 @@ import {
   SIGNUP_ERROR,
   CREATE_INITIAL_SUCCESS,
   CREATE_INITIAL_ERROR,
+  PROVIDE_USER_SUCCESS,
 } from "./actionTypes";
 
 // PURE FUNCTIONS
@@ -85,14 +86,16 @@ const createInitialError = (error) => {
 export const createProject = (project) => {
   return (dispatch, getState, { getFirebase, getFirestore }) => {
     const firestore = getFirestore();
+    const profile = getState().profile;
+    const authorId = getState().firebase.auth.uid;
     firestore
       .collection("projects")
       .add({
         ...project,
-        authorFirstName: "Chiji",
-        authorLastName: "Davidson",
-        authorId: 12345,
-        creadtedAt: new Date(),
+        authorFirstName: profile.firstName,
+        authorLastName: profile.lastName,
+        authorId: authorId,
+        createdAt: new Date().toString(),
       })
       .then(() => {
         dispatch(createNewProject(project));

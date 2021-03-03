@@ -26,7 +26,7 @@ function SignedInLinks(props) {
 
 const mapStateToProps = (state) => {
   return {
-    initials: state.initials.initialError,
+    initials: state.profile.initials,
   };
 };
 

@@ -5,23 +5,27 @@ import {
 
 const initState = {};
 
-const initReducer = (state = initState, action) => {
+const profileReducer = (state = initState, action) => {
   switch (action.type) {
     case CREATE_INITIAL_SUCCESS:
       console.log("Initials created");
       return {
         ...state,
-        initialError: action.payload[0].initials,
+        initials: action.payload[0].initials,
+        firstName: action.payload[0].firstName,
+        lastName: action.payload[0].lastName,
       };
     case CREATE_INITIAL_ERROR:
-      console.log("Initials failed", action.payload);
+      console.log("Initials failed.", action.payload);
       return {
         ...state,
-        initialError: "",
+        initials: "",
+        firstName: "",
+        lastName: "",
       };
     default:
       return state;
   }
 };
 
-export default initReducer;
+export default profileReducer;

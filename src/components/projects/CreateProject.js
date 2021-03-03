@@ -17,6 +17,7 @@ function CreateProject(props) {
     e.preventDefault();
     // console.log(project);
     props.createProject(project);
+    props.history.push("./");
   };
 
   const auth = props.auth;
@@ -30,7 +31,7 @@ function CreateProject(props) {
         <h5 className="grey-text text-darken-3">Create new project</h5>
         <div className="input-field">
           <label htmlFor="title">Title</label>
-          <input type="text" id="title" onChange={handleChange} />
+          <input type="text" id="title" onChange={handleChange} required />
         </div>
         <div className="input-field">
           <label htmlFor="content">Content</label>
@@ -38,6 +39,7 @@ function CreateProject(props) {
             id="content"
             className="materialize-textarea"
             onChange={handleChange}
+            required
           ></textarea>
         </div>
         <div className="input-field">
@@ -49,6 +51,7 @@ function CreateProject(props) {
 }
 
 const mapStateToProps = (state) => {
+  console.log(state);
   return {
     auth: state.firebase.auth,
   };
