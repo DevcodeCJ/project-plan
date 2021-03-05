@@ -2,8 +2,20 @@ import React from "react";
 
 function Notifications() {
   return (
-    <div>
-      <p>Notifications</p>
+    <div className="section">
+      <div className="card z-depth-0 grey notification-card">
+        <div className="card-content">
+          <span className="card-title white-text">
+            <strong>Notifications</strong>
+          </span>
+          <ul className="notifications white-text">
+            <li>Notification</li>
+            <li>Notification</li>
+            <li>Notification</li>
+            <li>Notification</li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
