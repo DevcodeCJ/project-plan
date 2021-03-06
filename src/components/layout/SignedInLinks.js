@@ -10,13 +10,20 @@ function SignedInLinks(props) {
   return (
     <ul className="right">
       <li>
-        <NavLink to="/create">New Project</NavLink>
+        <NavLink to="/create" className="nav-links">
+          New Project
+        </NavLink>
       </li>
       <li>
-        <a onClick={props.signOut}>Log Out</a>
+        <a onClick={props.signOut} className="nav-links">
+          Log Out
+        </a>
       </li>
       <li>
-        <NavLink to="/" className="btn btn-floating lighten-1 navlink-btn">
+        <NavLink
+          to="/"
+          className="nav-links btn btn-floating lighten-1 navlink-btn"
+        >
           {initials}
         </NavLink>
       </li>

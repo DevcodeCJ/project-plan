@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 
 function ProjectSummary({ project }) {
-  console.log(project);
+  // console.log(project);
   return (
     <div className="card z-depth-0 project-summary grey">
       <div className="card-content white-text text-darken-3">

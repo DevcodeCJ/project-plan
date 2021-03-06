@@ -13,12 +13,12 @@ function Navbar(props) {
   const links = auth.uid && users ? <SignedInLinks /> : <SignedOutLinks />;
   return (
     <nav className="nav-wrapper grey darken-3">
-      <div className="container">
+      <div className="nav-container">
         <Link to="/" className="brand-logo left">
           ProjectPlan
         </Link>
-        {links}
       </div>
+      {links}
     </nav>
   );
 }
