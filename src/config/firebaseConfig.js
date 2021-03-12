@@ -3,7 +3,7 @@ import "firebase/firestore";
 import "firebase/auth";
 
 // CONFIG DATA
-const apiKey = process.env.REACT_APP_FIREBASECONFIG_APIKEY;
+const apiKey = "AIzaSyDF95mPAmcf1c-9bfyUGz2k9V6ZbvHtAwQ";
 const authDomain = process.env.REACT_APP_FIREBASECONFIG_AUTHDOMAIN;
 const projectId = process.env.REACT_APP_FIREBASECONFIG_PROJECTID;
 const storageBucket = process.env.REACT_APP_FIREBASECONFIG_STORAGEBUCKET;
